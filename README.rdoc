@@ -1,8 +1,17 @@
-= todayilearned
+= til
 
-Description goes here.
+'til' stands for 'Today I Learned...' and the point of the application is:
+- You do whatever it is that you do all day
+- You sit down and type 'til' into your terminal
+- You write a short diddy about what you learned
+- It gets saved
+- You see what you learned before to remind yourself how awesome you are
 
-== Contributing to todayilearned
+The data is stored in a nice little SQLite file inside of ~/.til/til.sqlite by default, so you can do all manner of funsey SQL things to it if you'd like.
+
+We're using prepared statements for INSERTs, so it *should* handle whatever cockamamie input you can think up...but if it doesn't, feel free to yell at me (@ip2k on Twitter) and I'll try to fix it!
+
+== Contributing to til
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
@@ -14,6 +23,4 @@ Description goes here.
 
 == Copyright
 
-Copyright (c) 2011 ip2k. See LICENSE.txt for
-further details.
-
+til by ip2k is licensed under a Creative Commons-Attribution-NonCommercial-ShareAlike 3.0 Unported License.

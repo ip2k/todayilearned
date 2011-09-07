@@ -1,0 +1,37 @@
+#!/usr/bin/env ruby
+require 'sqlite3'
+
+# set our filename and path names up
+DBNAME = 'til.sqlite' # filename for SQLite DB
+DBPATH = '~/.til/' # with trailing slash
+
+# computed paths
+FULL_PATH = File.expand_path( DBPATH )
+FULL_NAME = File.expand_path( DBPATH + DBNAME )
+
+# sort our our directory
+begin
+    Dir.mkdir( FULL_PATH ) unless File::directory?( FULL_PATH )
+rescue
+    abort "Can't create directory: #{FULL_PATH}. Maybe it's already a file or exists but isn't writable by you?"
+end
+
+db = SQLite3::Database.new( FULL_NAME )
+
+puts 'What did you learn today?  Press ^d (ctrl+d) when done.'
+til = STDIN.read # let the user type and insert \n or whatever. We only stop on ^d
+db.transaction do |db| # wrap it in a nice clean transaction that rolls back upon failure
+    db.execute( 'CREATE TABLE IF NOT EXISTS til (id INTEGER PRIMARY KEY, time INTEGER, data TEXT)' ) # set up the table if it isn't there
+    db.execute( 'INSERT INTO til (time,data) VALUES (?,?)', Time.now.to_i, til ) # store the entry
+    puts "=> Saved!\n" # tell the user that we stored the entry if nothing failed
+end
+
+# show 3 random past entries
+3.times do
+    db.transaction do |db|
+        max = db.get_first_value( 'SELECT MAX(id) from til' ) # find out how many entries are in the db
+        max = Random.rand(1..max) # pick a random one between 1 and the highest ID
+        past = db.execute( 'SELECT time,data FROM til WHERE id=?', max.to_i).flatten # get the entry (as an array, but flatten it)
+        puts "On #{Time.at(past[0])} you learned #{past[1]}\n" # print out what you learned in the past :)
+    end
+end
