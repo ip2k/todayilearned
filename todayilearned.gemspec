@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
     "Rakefile",
     "VERSION",
     "bin/til",
-    "til.gemspec"
+    "todayilearned.gemspec"
   ]
   s.homepage = %q{http://github.com/ip2k/todayilearned}
   s.licenses = [%q{Creative Commons by-nc-sa}]
